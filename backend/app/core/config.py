@@ -1,0 +1,30 @@
+from pydantic_settings import BaseSettings
+from functools import lru_cache
+
+
+class Settings(BaseSettings):
+    # Database
+    DATABASE_URL: str = "postgresql://foodrush:foodrush123@localhost:5432/foodrush_db"
+
+    # JWT
+    SECRET_KEY: str = "foodrush_supersecret_jwt_key_2026_waffor_assessment"
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24 hours
+
+    # App
+    APP_NAME: str = "FoodRush API"
+    APP_VERSION: str = "1.0.0"
+    ENVIRONMENT: str = "development"
+    LOG_DIR: str = "/app/logs"
+
+    class Config:
+        env_file = ".env"
+        case_sensitive = True
+
+
+@lru_cache()
+def get_settings() -> Settings:
+    return Settings()
+
+
+settings = get_settings()
